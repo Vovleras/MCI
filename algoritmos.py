@@ -1,19 +1,14 @@
 import math
 from Clases import *
-from itertools import product
 import copy
 
 def calcularCI(red):
-    totalAgentes = 0
+    totalAgentes = len(red)
     num = 0
     for ag in red:
-        totalAgentes += ag.n
-        num += ag.n * math.pow((ag.o1 - ag.o2), 2)
+        num += ag.n * math.pow((ag.o1 - ag.o2), 2) 
     
-    if (totalAgentes == 0):
-        return 0
-    else: 
-        return num / totalAgentes
+    return num / totalAgentes
 
 def calcularEsfuerzo(red, e):
     esfuerzo = 0
@@ -34,25 +29,11 @@ redSocial = RedSocial(sec, 80)
 #print(calcularEsfuerzo(redSocial.sag, e1))
 #print(calcularEsfuerzo(redSocial.sag, e2))
 
-def generar_combinaciones(maximos):
-    combinaciones = []
-    combinacion = [0] * len(maximos)
-    def generar_combinacion(combinacion, index):
-        if index == len(maximos):
-            combinaciones.append(combinacion[:])
-            return
-        for i in range(maximos[index] + 1):
-            combinacion[index] = i
-            generar_combinacion(combinacion, index + 1)
-
-    generar_combinacion(combinacion, 0)
-    return combinaciones
-
 def obtenerNuevaRed(redSocial, e):
-    nuevaRed = copy.deepcopy(redSocial)
-    for i in range (len(nuevaRed.sag)):
-        nuevaRed.sag[i].n -= e[i]
-    return nuevaRed
+    solucion = copy.deepcopy(redSocial)
+    for i in range (len(solucion.sag)):
+        solucion.sag[i].n -= e[i]
+    return solucion
 
 def printRed(red):
     for ag in red.sag:
@@ -66,24 +47,33 @@ def maximoAgentes(redSocial):
     return maxAgentes
     
 
+def generar_combinaciones(redSocial):
+    maximos = maximoAgentes(redSocial)
+    combinaciones = []
+    combinacion = [0] * len(maximos)
+
+    def generar_combinacion(combinacion, index):
+        if index == len(maximos):
+            if (calcularEsfuerzo(redSocial.sag, combinacion) <= redSocial.r_max):
+                combinaciones.append(combinacion[:])
+            return
+        for i in range(maximos[index] + 1):
+            combinacion[index] = i
+            generar_combinacion(combinacion, index + 1)
+
+    generar_combinacion(combinacion, 0)
+
+    return combinaciones
+
 #Fuerza bruta
 def modciFB(redSocial):
-    maxAgentes = maximoAgentes(redSocial)
-    combinaciones = generar_combinaciones(maxAgentes)
-    soluciones = []
-    solCombinacion = []
+    combinaciones = generar_combinaciones(redSocial)
+    solucion = copy.deepcopy(redSocial)
     for i in range (len(combinaciones)):
-        if (calcularEsfuerzo(redSocial.sag, combinaciones[i]) <= redSocial.r_max):
-            soluciones.append(obtenerNuevaRed(redSocial, combinaciones[i]))
-            solCombinacion.append(combinaciones[i])
-
-    solucion = soluciones[0]
-    #e = solCombinacion[0]
-    print("Solucion: ", solucion)
-    for i in range (len(soluciones)):
-        if (calcularCI(soluciones[i].sag) < calcularCI(solucion.sag)):
-            solucion = soluciones[i]
-            e = solCombinacion[i]
+        newRed = obtenerNuevaRed(redSocial, combinaciones[i])
+        if (calcularCI(newRed.sag) < calcularCI(solucion.sag)):
+            solucion = newRed
+            e = combinaciones[i]
 
     for ag in solucion.sag:
         print(ag)
@@ -94,15 +84,21 @@ def modciFB(redSocial):
 
 #modciFB(redSocial)
 
-a1 = Agentes(5,-6,-94,0.062)
-a2 = Agentes(6,-84,-7,0.378)
-a3 = Agentes(1,-52,33,0.073)
-a4 = Agentes(4,77,-47,0.626)
-a5 = Agentes(4,-75,75,0.718)
+a1 = Agentes(2,-59,-77,0.161)
+a2 = Agentes(7,95,67,0.848)
+a3 = Agentes(2,-69,-19,0.478)
+a4 = Agentes(2,-64,59,0.031)
+a5 = Agentes(4,100,64,0.471)
+a6 = Agentes(8,-14,-65,0.245)
+a7 = Agentes(5,43,84,0.476)
+a8 = Agentes(2,-51,-3,0.721)
+a9 = Agentes(4,45,26,0.856)
+a10 =Agentes(7,62,-59,0.796)
 
-sec2 = [a1, a2, a3, a4, a5]
-redSocial2 = RedSocial(sec2, 4044)
+sec2 = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10]
+redSocial2 = RedSocial(sec2,819)
 modciFB(redSocial2)
+#generar_combinaciones(redSocial2)
 
 
 #Programación voraz
