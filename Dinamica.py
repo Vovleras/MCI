@@ -28,67 +28,56 @@ def matrizEsfuerzo(redSocial):
 #Dos matrices, una con ceros y otras con CI inicial
   
 def solucionDinamica(redSocial):
-    print("Entre a la funcion")
-    global cIInicial, esfuerzos
-    cIInicial = prueba.calcularCI(redSocial.sag)
-    n = len(redSocial.sag)
-    esfuerzos = matrizEsfuerzo(redSocial.sag)
-    print("Calcule esfuerzos")
-    esfuerzoMax = redSocial.r_max
-    matrizCI = [[None] * (n) for _ in range(esfuerzoMax + 1)] 
-    matrizAgentes = [[0] * (n) for _ in range(esfuerzoMax + 1)]  #Contiene la cantidad de agentes a cambiar
-    
-    #Caso trivial
-    iTrivial =0
-    iEsfuerzos=0
+  global cIInicial, esfuerzos
+  cIInicial = prueba.calcularCI(redSocial.sag)
+  n = len(redSocial.sag)
+  esfuerzos = matrizEsfuerzo(redSocial.sag)
+  esfuerzoMax = redSocial.r_max
+  matrizCI = [[None] * (n) for _ in range(esfuerzoMax + 1)] 
+  matrizAgentes = [[0] * (n) for _ in range(esfuerzoMax + 1)]  #Contiene la cantidad de agentes a cambiar
+
+  for i in range(0,n):
     conflictoVariable = cIInicial
     cantCambiar = 0
-    while(iTrivial<=esfuerzoMax):
-      print(f"i trivial: {iTrivial}")
-      #print(f"Matriz de CI: {matrizCI}\nMatriz de Agentes: {matrizAgentes}")
-      esfuerzoActual = esfuerzos[0][cantCambiar]
-      print(cantCambiar)
-      print("Esfuerzo: ", esfuerzoActual)
-      if (iTrivial>=esfuerzoActual):
-        print("Entro al else")
-        cantCambiar+=1
-        iEsfuerzos+=1
-        e = [0]*n
-        e[0] = cantCambiar
-        redModificada = prueba.obtenerNuevaRed(redSocial, e)
-        conflictoVariable = prueba.calcularCI(redModificada.sag)
-
-      matrizCI[iTrivial][0] = conflictoVariable
-      matrizAgentes[iTrivial][0] = cantCambiar    
-        
-      iTrivial+=1
-    
-    print(f"Matriz de CI: {matrizCI}\nMatriz de Agentes: {matrizAgentes}")
+    for j in range (0,esfuerzoMax):
+      esfuerzoActual = esfuerzos[i][cantCambiar]
       
-    #Solucion dinamica
-    #j son las columnas, i son las filas
-    for j in range(1,n):
-      posCambiar = 0
-      for i in range (0,esfuerzoMax):
-        #print("Columna ", j+1)
-        izquierda = matrizCI[i][j-1] #Valor de la izq se va a usar para comparar
-        #print(izquierda)
-        #Cuando el esfuerzo es menor que el de cambiar 1 persona
-        if (i<esfuerzos[j][0]):
-          nuevo = cIInicial
-          matrizCI[i][j]=min(izquierda,nuevo)
+      #Caso trivial
+      if (i==0):
+        if (j>=esfuerzoActual):
+          cantCambiar+=1
+          print(f"Cantidad a cambiar trivial: {cantCambiar}")
+          e = [0]*n
+          e[i] = cantCambiar
+          redModificada = prueba.obtenerNuevaRed(redSocial, e)
+          conflictoVariable = prueba.calcularCI(redModificada.sag)
+      
+      #Caso restante
+      else:
+        izquierda = matrizCI[j][i-1] #Valor de la izq se va a usar para comparar
+        posComparar = j-esfuerzos[i][cantCambiar]
+        
+        if(posComparar<0):
+          conflictoVariable = min(izquierda,cIInicial)
         else:
-          pos = i-esfuerzos[j][posCambiar]
-          posCambiar+=1
-          comparar = matrizAgentes[pos]
-          comparar[j]=posCambiar
+          e = matrizAgentes[posComparar] 
+                      
+          if (j>=esfuerzoActual):
+            cantCambiar+=1
+            print(f"Cantidad a cambiar restante: {cantCambiar}")
           
-          
-print("Inicial")
+          e[i] = cantCambiar
+          redModificada = prueba.obtenerNuevaRed(redSocial, e)
+          conflictoVariable=min(izquierda,prueba.calcularCI(redModificada.sag))
+        
+      matrizCI[j][i] = conflictoVariable
+      matrizAgentes[j][i] = cantCambiar
+  
+  print(f"Matriz de CI: {matrizCI}\nMatriz de Agentes: {matrizAgentes}")
+      
 ag1 = Clases.Agentes(3,-100,50,0.5)
 ag2 = Clases.Agentes(1,100,80,0.1)
 ag3 = Clases.Agentes(1,-10,0,0.5)
 sec = [ag1, ag2, ag3]
 redSocial = Clases.RedSocial(sec, 80)
-print("Creo la red social")
 solucionDinamica(redSocial)    
