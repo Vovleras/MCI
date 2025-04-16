@@ -58,7 +58,7 @@ def generar_combinaciones(redSocial):
                 combinaciones.append(combinacion[:])
             return
         for i in range(maximos[index] + 1):
-            combinacion[index] = i
+            combinacion[index] =  i
             generar_combinacion(combinacion, index + 1)
 
     generar_combinacion(combinacion, 0)
