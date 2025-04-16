@@ -1,7 +1,5 @@
 import Clases
 import prueba
-import heapq
-import numpy as np
 import math
 import copy
 
@@ -65,24 +63,12 @@ def solucionDinamica(redSocial):
           agenteSiguiente+=1
 
         if(cantCambiar==0):
-          print(f"Entre al if de cant=0 con i={i} j={j}")
+          #print(f"Entre al if de cant=0 con i={i} j={j}")
           conflictoVariable = min(izquierda,cIInicial)
           matrizCI[j][i] = conflictoVariable
           matrizAgentes[j][i] = 0
           #print(f"i: {i} | j:{j} | izq: {izquierda} | comparacion: {cIInicial}")
         else:
-          #Cuando cantCambiar sea mayor a 0
-          # posRef = j-esfuerzoActual #Pos utilizada para comparar con izq
-          # e = copy.deepcopy(matrizAgentes[posRef])
-          # e[i] = cantCambiar
-          # redModificada = prueba.obtenerNuevaRed(redSocial, e)
-          # valorComparar = prueba.calcularCI(redModificada.sag)
-          
-          #Miro j, cuantos puedo cambiar con ese j
-          #Recorrer el arreglo de esfuerzo, y hallar la pos del mayor valor <=j
-          
-          #Y comparo entre 1 y esa cantidad
-          
           valorFinalCI = izquierda #Inicializo para poder comparar
           valorFinalCant = 0 #Inicializo para poder comparar 
           
@@ -90,23 +76,25 @@ def solucionDinamica(redSocial):
             #print(f"k: {k} i: {i} j: {j}")
             posRef = j-esfuerzos[i][k]
             #print(f"cantCambiar={cantCambiar} porRef){posRef}")
-            e = copy.deepcopy(matrizAgentes[posRef])
-            e[i] = k
-            redModificada = prueba.obtenerNuevaRed(redSocial, e)
+            e1 = copy.deepcopy(matrizAgentes[posRef])
+            e1[i] = k
+            redModificada = prueba.obtenerNuevaRed(redSocial, e1)
             valorComparar = prueba.calcularCI(redModificada.sag)
             
             if (valorFinalCI > valorComparar):
               valorFinalCI = valorComparar
               valorFinalCant = k
-              #print(f"Valor a comparar")
+              print(f"Valor final CI: {valorFinalCI}")
               
           matrizCI[j][i] = valorFinalCI
           matrizAgentes[j][i] = valorFinalCant
             
           
           #print(f"i: {i} | j:{j} | izq: {izquierda} | comparacion: {valorComparar}")
-    encontrarSolucion(matrizCI, matrizAgentes, n, esfuerzoMax, esfuerzos)
-          
+  
+  sol = encontrarSolucion(matrizCI, matrizAgentes, n, esfuerzoMax, esfuerzos, cIInicial)
+  redFinal = prueba.obtenerNuevaRed(redSocial,sol)
+  print("Esta es el nuevo CI: ",prueba.calcularCI(redFinal.sag))
   
   print(f"Matriz de CI:")
   for j in range (0,esfuerzoMax+1):
@@ -116,18 +104,24 @@ def solucionDinamica(redSocial):
   for j in range (0,esfuerzoMax+1):
     print(f"{j}\t{matrizAgentes[j]}")
     
-def encontrarSolucion(matrizCI, matrizAgentes, n, esfuerzoMax, esfuerzos):
+def encontrarSolucion(matrizCI, matrizAgentes, n, esfuerzoMax, esfuerzos, cIInicial):
+  print("Entro a hallar solucion")
   solucion = [0]*n
   
-  i = n-1
   j = esfuerzoMax
-  
-  for i in range (n,0, -1):
-    if (matrizCI[i][j]!=matrizCI[i-1][j]):
-      solucion[i-1] = matrizAgentes[i-1][j]
+    
+  for i in range (n-1,0, -1):
+    if (matrizCI[j][i]!=matrizCI[j][i-1]):
+      print(f"Entro al if")
+      solucion[i] = matrizAgentes[j][i]
       j -= esfuerzos[i][solucion[i]]
+    print(f"i: {i} j:{j}")
   
-  print(solucion)    
+  #Caso primer grupo
+  if(matrizCI[j][0]!=cIInicial):
+    solucion[0] = matrizAgentes[j][0]
+  
+  print(f"Solución final: {solucion}")    
   return solucion
       
 # ag1 = Clases.Agentes(3,-100,50,0.5)
