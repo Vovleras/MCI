@@ -1,3 +1,5 @@
+#sag = Grupos de Agentes
+#r_max: Esfuerzo máximo de la red
 class RedSocial:
     def __init__(self, sag, r_max):
         self.sag = sag
@@ -6,6 +8,9 @@ class RedSocial:
     def __str__(self):
         return f'<{self.sag}, {self.r_max}>'
     
+#n: Cantidad de agentes en el grupo
+#oi: Opiniones
+#r: Nivel de rigidez
 class Agentes:
     def __init__(self, n, o1, o2, r):
         self.n = n
