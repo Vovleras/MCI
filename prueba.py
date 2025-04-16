@@ -100,7 +100,7 @@ def modciFB(redSocial):
     print("E: ", e)
 
 
-modciFB(redSocial)
+#modciFB(redSocial)
 
 a1 = Agentes(6,29,-32,0.77)
 a2 = Agentes(11,76,65,0.17)
@@ -116,7 +116,7 @@ a10 =Agentes(7,-29,91,0.188)
 sec2 = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10]
 redSocial2 = RedSocial(sec2,955)
 #modciFB(redSocial2)
-generar_combinaciones(redSocial2)
+#generar_combinaciones(redSocial2)
 
 
 #Programación voraz
