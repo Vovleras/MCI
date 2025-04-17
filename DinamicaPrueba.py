@@ -72,7 +72,7 @@ def solucionDinamica(redSocial):
           arregloValores = [[izquierda,0]] #Primera pos el CI, segunda la cantidad de agentes a cambiar
           
           
-          for k in range (1,cantCambiar+1):
+          for k in range (0,cantCambiar+1):
             #print(f"k: {k} i: {i} j: {j}")
             posRef = j-esfuerzos[i][k]
 
@@ -149,17 +149,22 @@ def encontrarSolucion(matrizCI, matrizAgentes, n, esfuerzoMax, esfuerzos, cIInic
 # ag2 = Clases.Agentes(1,100,80,0.1)
 # ag3 = Clases.Agentes(1,-10,0,0.5)
 
-ag1 = Clases.Agentes(9,-96,12,0.951)
-ag2 = Clases.Agentes(9,-79,47,0.993)
-ag3 = Clases.Agentes(8,16,-63,0.994)
-ag4 = Clases.Agentes(3,-12,92,0.087)
-ag5 = Clases.Agentes(3,-64,-50,0.884)
-ag6 = Clases.Agentes(2,-17,25,0.309)
-ag7 = Clases.Agentes(2,-10,-77,0.344)
-ag8 = Clases.Agentes(7,34,-58,0.05)
-ag9 = Clases.Agentes(7,21,24,0.451)
-ag10 = Clases.Agentes(3,-82,-55,0.955)
+ag1 = Clases.Agentes(2,93,-9,0.062)
+ag2 = Clases.Agentes(9,-4,60,0.121)
+ag3 = Clases.Agentes(5,-69,-17,0.449)
+ag4 = Clases.Agentes(8,-12,-18,0.068)
+ag5 = Clases.Agentes(4,69,-55,0.634)
+ag6 = Clases.Agentes(1,96,-13,0.063)
+ag7 = Clases.Agentes(2,66,-89,0.667)
+ag8 = Clases.Agentes(9,-26,-44,0.811)
+ag9 = Clases.Agentes(1,29,95,0.502)
+ag10 = Clases.Agentes(1,-95,-93,0.546)
+ag11 = Clases.Agentes(4,94,-44,0.722)
+ag12 = Clases.Agentes(2,1,81,0.046)
+ag13 = Clases.Agentes(8,42,-2,0.118)
+ag14 = Clases.Agentes(2,53,-59,0.613)
+ag15 = Clases.Agentes(6,66,100,0.538)
 
-sec = [ag1, ag2, ag3, ag4, ag5, ag6, ag7, ag8, ag9, ag10]
-redSocial = Clases.RedSocial(sec, 64)
+sec = [ag1, ag2, ag3, ag4, ag5, ag6, ag7, ag8, ag9, ag10, ag11, ag12, ag13, ag14, ag15 ]
+redSocial = Clases.RedSocial(sec, 116)
 solucionDinamica(redSocial)    
