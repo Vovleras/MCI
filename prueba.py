@@ -118,6 +118,16 @@ redSocial2 = RedSocial(sec2,955)
 #modciFB(redSocial2)
 #generar_combinaciones(redSocial2)
 
+ag1 = Agentes(2,-17,25,0.309)
+ag2 = Agentes(4,-54,88,0.339)
+ag3 = Agentes(3,-4,75,0.365)
+ag4 = Agentes(3,-87,-63,0.317)
+ag5 = Agentes(7,-99,-40,0.968)
+
+sec = [ag1, ag2, ag3, ag4, ag5]
+redSocial = RedSocial(sec, 315)
+generar_combinaciones(redSocial)    
+
 
 #Programación voraz
 def modciV():
