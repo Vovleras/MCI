@@ -113,10 +113,11 @@ def solucionDinamica(redSocial):
   redFinal = prueba.obtenerNuevaRed(redSocial,sol)
   print("Esta es la solución final: ", sol)
   print("Esta es el nuevo CI: ",prueba.calcularCI(redFinal.sag))
+  print("Esta es la última celda: ",matrizCI[esfuerzoMax][i])
   
-  print(f"Matriz de CI:")
-  for j in range (0,esfuerzoMax+1):
-    print(f"{j}\t{matrizCI[j]}")
+  # print(f"Matriz de CI:")
+  # for j in range (0,esfuerzoMax+1):
+  #   print(f"{j}\t{matrizCI[j]}")
   
   # print(f"\nMatriz de Cantidades:")
   # for j in range (0,esfuerzoMax+1):
@@ -148,12 +149,17 @@ def encontrarSolucion(matrizCI, matrizAgentes, n, esfuerzoMax, esfuerzos, cIInic
 # ag2 = Clases.Agentes(1,100,80,0.1)
 # ag3 = Clases.Agentes(1,-10,0,0.5)
 
-ag1 = Clases.Agentes(2,-17,25,0.309)
-ag2 = Clases.Agentes(4,-54,88,0.339)
-ag3 = Clases.Agentes(3,-4,75,0.365)
-ag4 = Clases.Agentes(3,-87,-63,0.317)
-ag5 = Clases.Agentes(7,-99,-40,0.968)
+ag1 = Clases.Agentes(9,-96,12,0.951)
+ag2 = Clases.Agentes(9,-79,47,0.993)
+ag3 = Clases.Agentes(8,16,-63,0.994)
+ag4 = Clases.Agentes(3,-12,92,0.087)
+ag5 = Clases.Agentes(3,-64,-50,0.884)
+ag6 = Clases.Agentes(2,-17,25,0.309)
+ag7 = Clases.Agentes(2,-10,-77,0.344)
+ag8 = Clases.Agentes(7,34,-58,0.05)
+ag9 = Clases.Agentes(7,21,24,0.451)
+ag10 = Clases.Agentes(3,-82,-55,0.955)
 
-sec = [ag1, ag2, ag3, ag4, ag5]
-redSocial = Clases.RedSocial(sec, 315)
+sec = [ag1, ag2, ag3, ag4, ag5, ag6, ag7, ag8, ag9, ag10]
+redSocial = Clases.RedSocial(sec, 64)
 solucionDinamica(redSocial)    

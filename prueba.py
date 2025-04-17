@@ -126,7 +126,7 @@ ag5 = Agentes(7,-99,-40,0.968)
 
 sec = [ag1, ag2, ag3, ag4, ag5]
 redSocial = RedSocial(sec, 315)
-generar_combinaciones(redSocial)    
+#generar_combinaciones(redSocial)    
 
 
 #Programación voraz
