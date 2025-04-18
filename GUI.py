@@ -9,14 +9,14 @@ import traceback
 archivo_generado= None
 
 def cargar_archivo():
-    # Abre el cuadro de diálogo para seleccionar un archivo
+    
     archivo = filedialog.askopenfilename(
         title="Seleccionar archivo",
         filetypes=(("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*"))
     )
     if archivo:
-        archivo_seleccionado.set(archivo)  # Guarda la ruta del archivo en la variable
-        return archivo  # Retorna la ruta del archivo seleccionado
+        archivo_seleccionado.set(archivo)  
+        return archivo  
     return None
 def leer_archivo(ruta_archivo):
     try:
@@ -56,7 +56,7 @@ def crear_RedSocial(datos):
 
 def escribir_archivo(ruta_archivo, contenido):
     try:
-        # Asegurar que el archivo tenga extensión .txt
+        
         if not ruta_archivo.lower().endswith('.txt'):
             ruta_archivo += '.txt'
             
@@ -87,7 +87,7 @@ def enviar_info():
     
     
     try:
-        # Procesar el archivo
+       
         datos, ruta = leer_archivo(nombre_archivo)
         res = crear_RedSocial(datos)
         
@@ -123,11 +123,11 @@ def descargar_resultados():
         return
 
     try:
-        # Abrir el archivo generado para leer su contenido
+        
         with open(archivo_generado, "r", encoding="utf-8") as archivo:
             contenido = archivo.read()
 
-        # Abrir el cuadro de diálogo para guardar el archivo
+       
         archivo_guardar = filedialog.asksaveasfile(
             mode="w",
             defaultextension=".txt",
