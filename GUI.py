@@ -18,6 +18,7 @@ def cargar_archivo():
         archivo_seleccionado.set(archivo)  
         return archivo  
     return None
+
 def leer_archivo(ruta_archivo):
     try:
         with open(ruta_archivo, 'r', encoding='utf-8') as archivo:
@@ -36,7 +37,7 @@ def leer_archivo(ruta_archivo):
             fila = [int(n) if i < 3 else float(n) for i, n in enumerate(numeros)]
             datos_intermedios.append(fila)
 
-        return [primera_linea, datos_intermedios, ultima_linea], ruta_archivo
+        return [primera_linea, datos_intermedios, ultima_linea]
 
     except Exception as e:
         print(f"Ocurrió un error: {e}")
@@ -88,7 +89,7 @@ def enviar_info():
     
     try:
        
-        datos, ruta = leer_archivo(nombre_archivo)
+        datos = leer_archivo(nombre_archivo)
         res = crear_RedSocial(datos)
         
         
@@ -96,13 +97,13 @@ def enviar_info():
         if alg == "Voraz":
             sol = salida(res)
             print("hallo la sol")
-            archivo_generado = escribir_archivo(ruta, sol)
+            archivo_generado = escribir_archivo("resultados.txt", sol)
         elif alg == "Fuerza Bruta":
             print("f")
-            archivo_generado = escribir_archivo(ruta, res)
+            archivo_generado = escribir_archivo("resultados.txt", res)
         elif alg == "Dinámica":
             print("d")
-            archivo_generado = escribir_archivo(ruta, res)
+            archivo_generado = escribir_archivo("resultados.txt", res)
         else:
             messagebox.showerror("Error", "Algoritmo no válido.")
             return

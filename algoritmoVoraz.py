@@ -72,7 +72,7 @@ def salida(redSocial):
     print("Entro a sALIDA")
     e =  modciV(redSocial)
     nuevaRed= obtenerNuevaRed(redSocial, e)
-    ci = calcularCI(redSocial)
+    ci = calcularCI(nuevaRed)
     esfuerzo = calcularEsfuerzoRed(redSocial, e)
     print("Salida bien")
     return Salida(e, ci, esfuerzo, nuevaRed)
