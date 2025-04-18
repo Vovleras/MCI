@@ -22,10 +22,11 @@ class Agentes:
         return f'({self.n}, {self.o1}, {self.o2}, {self.r})'
     
 class Salida:
-    def __init__(self, e, esfuerzo, ci):
+    def __init__(self, e, esfuerzo, ci, nuevaRed):
         self.e = e
         self.esfuerzo = esfuerzo
         self.ci = ci
+        self.nuevaRed = nuevaRed
 
     def __str__(self):
         return f'<{self.e}, {self.ci}, {self.esfuerzo}>'

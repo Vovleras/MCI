@@ -1,8 +1,37 @@
-import Clases
 import math
 import copy
 import heapq
 
+class RedSocial:
+  def __init__(self, sag, r_max):
+    self.sag = sag
+    self.r_max = r_max
+
+  def __str__(self):
+    return f'<{self.sag}, {self.r_max}>'
+    
+#n: Cantidad de agentes en el grupo
+#oi: Opiniones
+#r: Nivel de rigidez
+class Agentes:
+  def __init__(self, n, o1, o2, r):
+    self.n = n
+    self.o1 = o1
+    self.o2 = o2
+    self.r = r
+
+  def __str__(self):
+    return f'({self.n}, {self.o1}, {self.o2}, {self.r})'
+    
+class Salida:
+  def __init__(self, e, esfuerzo, ci):
+    self.e = e
+    self.esfuerzo = esfuerzo
+    self.ci = ci
+
+  def __str__(self):
+    return f'<{self.e}, {self.ci}, {self.esfuerzo}>'
+      
 #Recibe el sga de la red y calcula el CI de dicha red
 def calcularCI(red):
   totalAgentes = len(red)
@@ -34,14 +63,14 @@ def matrizEsfuerzo(redSocial):
 
 #Recibe el esfuerzo, y la matriz de esfuerzos para ese grupo
 def maxEsfuerzo(esfuerzo, matrizE):
-  maxE=0
   cant=0
+  maxE=0
   for i in matrizE:
     if(i<= esfuerzo and i>maxE):
       maxE=i
       cant+=1
   
-  return(cant,maxE)
+  return(cant)
 
 #print(maxEsfuerzo(300,[75,150,225]))
 
@@ -62,6 +91,24 @@ def encontrarSolucion(matrizCI, matrizAgentes, n, esfuerzoMax, esfuerzos, cIInic
        
   return solucion
 
+def encontrarSolucionParcial(matriz, n, esfuerzoMax, esfuerzos, cIInicial, solucion):
+  #print("Entro a hallar solucion")
+  j = esfuerzoMax
+    
+  for i in range (n-1,0, -1):
+    if (matriz[j][i][0]!=matriz[j][i-1][0]):
+      #print(f"Entro al if")
+      solucion[i] = matriz[j][i][1]
+      j -= esfuerzos[i][solucion[i]]
+    #print(f"i: {i} j:{j}")
+  
+  #Caso primer grupo
+  if(matriz[j][0][0]!=cIInicial):
+    solucion[0] = matriz[j][0][1]
+  
+  #print(f"Solución final: {solucion}")    
+  return solucion
+
 def solucionDinamica(redSocial):
   
   #Inicializar variables y matrices
@@ -70,9 +117,7 @@ def solucionDinamica(redSocial):
   n = len(grupos)
   esfuerzos = matrizEsfuerzo(grupos)
   esfuerzoMax = redSocial.r_max
-  matrizCI = [[None] * (n) for _ in range(esfuerzoMax + 1)] 
-  matrizAgentes = [[0] * (n) for _ in range(esfuerzoMax + 1)]
-  solucionesParciales = [[0] * (n) for _ in range(esfuerzoMax + 1)]
+  matrizFinal = [[(cIInicial,0)] * (n) for _ in range(esfuerzoMax + 1)] 
   
   #Recorrer y llenar matrices
   for i in range(0,n):
@@ -80,70 +125,58 @@ def solucionDinamica(redSocial):
       maxCambio = maxEsfuerzo(j,esfuerzos[i])
       
       #CASO TRIVIAL    
-      if (i==0):                  
+      if (i==0 and maxCambio>0):   
         e = [0]*n
-        e[i] = maxCambio[0]
+        e[i] = maxCambio
         redModificada = obtenerNuevaRed(redSocial, e)
         conflictoVariable = calcularCI(redModificada.sag)
-        matrizCI[j][i] = conflictoVariable
-        matrizAgentes[j][i] = maxCambio[0]
-        solucionesParciales[j][i] = copy.deepcopy(e)
+        matrizFinal[j][i] = (conflictoVariable,maxCambio)
       
       #CASO DINÁMICO
-      else:
-        izquierda = matrizCI[j][i-1]
+      elif(i>0):
+        izquierda = matrizFinal[j][i-1][0]
         
         #Cuando no puedo cambiar ningún agente
-        if(maxCambio[0]==0):
-          matrizCI[j][i] = izquierda
-          matrizAgentes[j][i] = 0
-          solucionesParciales[j][i] = copy.deepcopy(solucionesParciales[j][i-1])
+        if(maxCambio<1):
+          matrizFinal[j][i] = (izquierda,0)
         
-        #Cuando puedo cambiar 1
-        elif (maxCambio[0]==1):
-          posRef = j-maxCambio[1]
-          e = copy.deepcopy(solucionesParciales[posRef][i-1])
-          e[i]=1
-          redModificada = obtenerNuevaRed(redSocial, e)
-          conflictoVariable = calcularCI(redModificada.sag)
-          
-          if(izquierda<=conflictoVariable):
-            matrizCI[j][i] = izquierda
-            matrizAgentes[j][i] = 0
-            solucionesParciales[j][i] = copy.deepcopy(solucionesParciales[j][i-1])
-          else:
-            matrizCI[j][i] = conflictoVariable
-            matrizAgentes[j][i] = 1
-            #Creo qeu aquí se calcula la solución con la función
-            solucionesParciales[j][i] = copy.deepcopy(e)
-        
-        #Cuando puedo cambiar 2 o más
+        #Cuando puedo cambiar 1 o más
         else:
-          arregloValores = [(izquierda,0,solucionesParciales[j][i-1])]
+          arregloValores = [(izquierda,0)]
           
-          for k in range (0,maxCambio[0]):
-            posRef = j-esfuerzos[i][k]
-            print("posRef: ",posRef)
-            e = copy.deepcopy(solucionesParciales[posRef][i-1])
+          for k in range (1,maxCambio+1):
+            #posRef = j-esfuerzos[i][k]
+            posRef = j - math.ceil(math.fabs(redSocial.sag[i].o1 - redSocial.sag[i].o2) * redSocial.sag[i].r * (k))
+            e = encontrarSolucionParcial(matrizFinal, i, posRef, esfuerzos, cIInicial, [0]*n)
             e[i]=k
             redModificada = obtenerNuevaRed(redSocial, e)
-            conflictoVariable = calcularCI(redModificada.sag)
-            arregloValores.append((conflictoVariable,k,e))
+            valorComparar = calcularCI(redModificada.sag)
+            arregloValores.append((valorComparar,k))
           
           heapq.heapify(arregloValores)
-          matrizCI[j][i] = arregloValores[0][0]
-          matrizAgentes[j][i] = arregloValores[0][1]
-          solucionesParciales[j][i] = copy.deepcopy(arregloValores[0][2])
-
-ag1 = Clases.Agentes(2,-17,25,0.309)
-ag2 = Clases.Agentes(4,-54,88,0.339)
-ag3 = Clases.Agentes(3,-4,75,0.365)
-ag4 = Clases.Agentes(3,-87,-63,0.317)
-ag5 = Clases.Agentes(7,-99,-40,0.968)
-
-sec = [ag1, ag2, ag3, ag4, ag5]
-redSocial = Clases.RedSocial(sec, 315)
-solucionDinamica(redSocial)    
+          matrizFinal[j][i] = (arregloValores[0][0],arregloValores[0][1])
           
-          
-        
+  print(f"Matriz:")
+  for j in range (0,esfuerzoMax+1):
+    print(f"{j}\t{matrizFinal[j]}")
+
+#Prueba 12
+ag1 = Agentes(2,93,-9,0.062)
+ag2 = Agentes(9,-4,60,0.121)
+ag3 = Agentes(5,-69,-17,0.449)
+ag4 = Agentes(8,-12,-18,0.068)
+ag5 = Agentes(4,69,-55,0.634)
+ag6 = Agentes(1,96,-13,0.063)
+ag7 = Agentes(2,66,-89,0.667)
+ag8 = Agentes(9,-26,-44,0.811)
+ag9 = Agentes(1,29,95,0.502)
+ag10 = Agentes(1,-95,-93,0.546)
+ag11 = Agentes(4,94,-44,0.722)
+ag12 = Agentes(2,1,81,0.046)
+ag13 = Agentes(8,42,-2,0.118)
+ag14 = Agentes(2,53,-59,0.613)
+ag15 = Agentes(6,66,100,0.538)
+
+sec = [ag1, ag2, ag3, ag4, ag5, ag6, ag7, ag8, ag9, ag10, ag11, ag12, ag13, ag14, ag15 ]
+redSocial = RedSocial(sec, 116)
+solucionDinamica(redSocial)

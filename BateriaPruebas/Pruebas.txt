@@ -1,3 +1,31 @@
+--PRUEBA 5--
+a1 = Clases.Agentes(6,57,10,0.537)
+a2 = Clases.Agentes(9,63,98,0.749)
+a3 = Clases.Agentes(4,-36,39,0.636)
+a4 = Clases.Agentes(9,-24,52,0.984)
+a5 = Clases.Agentes(4,49,-69,0.452)
+
+
+sec2 = [a1, a2, a3, a4, a5] 
+redSocial2 = Clases.RedSocial(sec2,460)
+
+
+--PRUEBA 8--
+a1 = Clases.Agentes(6,29,-32,0.77)
+a2 = Clases.Agentes(11,76,65,0.17)
+a3 = Clases.Agentes(12,27,-84,0.527)
+a4 = Clases.Agentes(1,16,72,0.257)
+a5 = Clases.Agentes(7,-6,-93,0.758)
+a6 = Clases.Agentes(2,-43,-14,0.719)
+a7 = Clases.Agentes(10,45,-61,0.475)
+a8 = Clases.Agentes(10,4,-26,0.081)
+a9 = Clases.Agentes(10,-7,-74,0.96)
+a10 = Clases.Agentes(7,-29,91,0.188)
+
+sec2 = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10]
+redSocial2 = Clases.RedSocial(sec2,955)
+
+
 --PRUEBA 11--
 ag1 = Clases.Agentes(7,88,12,0.552)
 ag2 = Clases.Agentes(6,48,44,0.447)
