@@ -115,9 +115,9 @@ def solucionDinamica(redSocial):
   print("Esta es el nuevo CI: ",prueba.calcularCI(redFinal.sag))
   print("Esta es la última celda: ",matrizCI[esfuerzoMax][i])
   
-  # print(f"Matriz de CI:")
-  # for j in range (0,esfuerzoMax+1):
-  #   print(f"{j}\t{matrizCI[j]}")
+  print(f"Matriz de CI:")
+  for j in range (0,esfuerzoMax+1):
+    print(f"{j}\t{matrizCI[j]}")
   
   # print(f"\nMatriz de Cantidades:")
   # for j in range (0,esfuerzoMax+1):
@@ -167,4 +167,19 @@ ag15 = Clases.Agentes(6,66,100,0.538)
 
 sec = [ag1, ag2, ag3, ag4, ag5, ag6, ag7, ag8, ag9, ag10, ag11, ag12, ag13, ag14, ag15 ]
 redSocial = Clases.RedSocial(sec, 116)
-solucionDinamica(redSocial)    
+#solucionDinamica(redSocial) 
+
+a1 = Clases.Agentes(6,57,10,0.537)
+a2 = Clases.Agentes(9,63,98,0.749)
+a3 = Clases.Agentes(4,-36,39,0.636)
+a4 = Clases.Agentes(9,-24,52,0.984)
+a5 = Clases.Agentes(4,49,-69,0.452)
+"""a6 = Agentes(2,-43,-14,0.719)
+a7 = Agentes(10,45,-61,0.475)
+a8 = Agentes(10,4,-26,0.081)
+a9 = Agentes(10,-7,-74,0.96)
+a10 =Agentes(7,-29,91,0.188)"""
+
+sec2 = [a1, a2, a3, a4, a5]#, a6, a7, a8, a9, a10]
+redSocial2 = Clases.RedSocial(sec2,460)
+solucionDinamica(redSocial2)
