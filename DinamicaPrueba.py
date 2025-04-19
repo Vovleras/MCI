@@ -98,11 +98,12 @@ def solucionDinamica(redSocial):
   print("Esta es el nuevo CI: ",prueba.calcularCI(redFinal.sag))
   print("Esta es la última celda: ",matrizCI[esfuerzoMax][i])
 
+  print(f"Matriz de CI:")
+  for j in range (0,esfuerzoMax+1):
+    print(f"{j}\t{matrizCI[j]}")
+
   return sol, matrizCI[esfuerzoMax][i]
   
-  # print(f"Matriz de CI:")
-  # for j in range (0,esfuerzoMax+1):
-  #   print(f"{j}\t{matrizCI[j]}")
   
   # print(f"\nMatriz de Cantidades:")
   # for j in range (0,esfuerzoMax+1):
@@ -181,12 +182,12 @@ ag6 = Clases.Agentes(1,96,-13,0.063)
 ag7 = Clases.Agentes(2,66,-89,0.667)
 ag8 = Clases.Agentes(9,-26,-44,0.811)
 ag9 = Clases.Agentes(1,29,95,0.502)
-ag10 = Clases.Agentes(1,-95,-93,0.546)
-ag11 = Clases.Agentes(4,94,-44,0.722)
-ag12 = Clases.Agentes(2,1,81,0.046)
-ag13 = Clases.Agentes(8,42,-2,0.118)
-ag14 = Clases.Agentes(2,53,-59,0.613)
-ag15 = Clases.Agentes(6,66,100,0.538)
+ag10 =Clases.Agentes(1,-95,-93,0.546)
+ag11 =Clases.Agentes(4,94,-44,0.722)
+ag12 =Clases.Agentes(2,1,81,0.046)
+ag13 =Clases.Agentes(8,42,-2,0.118)
+ag14 =Clases.Agentes(2,53,-59,0.613)
+ag15 =Clases.Agentes(6,66,100,0.538)
 
 sec = [ag1, ag2, ag3, ag4, ag5, ag6, ag7, ag8, ag9, ag10, ag11, ag12, ag13, ag14, ag15 ]
 redSocial = Clases.RedSocial(sec, 116)
