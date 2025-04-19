@@ -84,22 +84,24 @@ def modciFB(redSocial):
 
 #modciFB(redSocial)
 
-a1 = Agentes(2,-59,-77,0.161)
-a2 = Agentes(7,95,67,0.848)
-a3 = Agentes(2,-69,-19,0.478)
-a4 = Agentes(2,-64,59,0.031)
-a5 = Agentes(4,100,64,0.471)
-a6 = Agentes(8,-14,-65,0.245)
-a7 = Agentes(5,43,84,0.476)
-a8 = Agentes(2,-51,-3,0.721)
-a9 = Agentes(4,45,26,0.856)
-a10 =Agentes(7,62,-59,0.796)
+a1 = Agentes(6,29,-32,0.77)
+a2 = Agentes(11,76,65,0.17)
+a3 = Agentes(12,27,-84,0.527)
+a4 = Agentes(1,16,72,0.257)
+a5 = Agentes(7,-6,-93,0.758)
+a6 = Agentes(2,-43,-14,0.719)
+a7 = Agentes(10,45,-61,0.475)
+a8 = Agentes(10,4,-26,0.081)
+a9 = Agentes(10,-7,-74,0.96)
+a10 =Agentes(7,-29,91,0.188)
 
 sec2 = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10]
-redSocial2 = RedSocial(sec2,819)
-modciFB(redSocial2)
+redSocial2 = RedSocial(sec2,955)
+#modciFB(redSocial2)
 #generar_combinaciones(redSocial2)
-
+nr = obtenerNuevaRed(redSocial2, [6, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+printRed(nr)
+print("CI: ", calcularCI(nr.sag))
 
 #Programación voraz
 def modciV():

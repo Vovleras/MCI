@@ -72,6 +72,7 @@ def salida(redSocial):
     print("Entro a sALIDA")
     e =  modciV(redSocial)
     nuevaRed= obtenerNuevaRed(redSocial, e)
+    print("Solucion: ",e)
     ci = calcularCI(nuevaRed)
     esfuerzo = calcularEsfuerzoRed(redSocial, e)
     print("Salida bien")
@@ -79,7 +80,7 @@ def salida(redSocial):
     
         
                 
-""" #prueba
+"""#prueba
 a1 = Agentes(2,-17,25,0.309)
 a2 = Agentes(4,-54,88,0.339)
 a3 = Agentes(3,-4,75,0.365)
@@ -87,7 +88,10 @@ a4 = Agentes(3,-87,-63,0.317)
 a5 = Agentes(7,-99,-40,0.968)
 sec2 = [a1, a2, a3, a4, a5]
 redSocial2 = RedSocial(sec2,315)
-printRed(obtenerNuevaRed(redSocial2, modciV(redSocial2))) """
+v = modciV(redSocial2)
+nr = obtenerNuevaRed(redSocial2, v)
+printRed(nr)
+print("CI: ", calcularCI(nr))"""
         
     
     

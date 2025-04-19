@@ -1,6 +1,6 @@
-import tkinter as tk
 from tkinter import filedialog, messagebox
 from tkinter.ttk import Combobox
+import tkinter as tk
 from Clases import *
 from algoritmoVoraz import salida
 import os
@@ -146,7 +146,7 @@ def descargar_resultados():
 
 ventana = tk.Tk()
 ventana.title("Moderador del conflicto interno")
-ventana.geometry("450x400")
+ventana.geometry("600x400")
 ventana.resizable(False, False)
 
 # Encabezado
@@ -161,7 +161,6 @@ subtexto_inicial.pack()
 frame_archivo = tk.Frame(ventana, pady=10)
 frame_archivo.pack(fill="x", padx=20)
 texto_archivo = tk.Label(frame_archivo, text="Seleccione un archivo:", anchor="w")
-texto_archivo.pack(fill="x")
 archivo_seleccionado = tk.StringVar()
 campo_archivo = tk.Entry(frame_archivo, textvariable=archivo_seleccionado, width=40, state="readonly")
 campo_archivo.pack(side="left", pady=5, padx=5)
