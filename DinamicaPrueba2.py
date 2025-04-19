@@ -95,10 +95,10 @@ def encontrarSolucionParcial(matriz, n, esfuerzoMax, esfuerzos, cIInicial, soluc
   #print("Entro a hallar solucion")
   j = esfuerzoMax
     
-  for i in range (n-1,0, -1):
+  for i in range (n,0, -1):
     if (matriz[j][i][0]!=matriz[j][i-1][0]):
       #print(f"Entro al if")
-      solucion[i] = matriz[j][i][1]
+      solucion[i] = matriz[j][i-1][1]
       j -= esfuerzos[i][solucion[i]]
     #print(f"i: {i} j:{j}")
   

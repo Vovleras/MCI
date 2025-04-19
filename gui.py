@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from tkinter.ttk import Combobox
 from Clases import *
-from DinamicaPrueba import salida
+from DinamicaPrueba100 import salida
 import os
 import traceback
 
