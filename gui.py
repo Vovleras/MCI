@@ -147,7 +147,7 @@ def descargar_resultados():
 
 ventana = tk.Tk()
 ventana.title("Moderador del conflicto interno")
-ventana.geometry("450x400")
+ventana.geometry("600x400")
 ventana.resizable(False, False)
 
 # Encabezado
