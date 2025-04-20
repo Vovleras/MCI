@@ -19,14 +19,13 @@ class Agentes:
         return f'({self.n}, {self.o1}, {self.o2}, {self.r})'
     
 class Salida:
-    def __init__(self, e, esfuerzo, ci, nuevaRed):
+    def __init__(self, e, esfuerzo, ci):
         self.e = e
         self.esfuerzo = esfuerzo
         self.ci = ci
-        self.nuevaRed = nuevaRed
 
     def __str__(self):
-        return f'<{self.e}, {self.ci}, {self.esfuerzo}>'
+        return f'<{self.ci}, {self.esfuerzo}, {self.e}>'
     
     
    

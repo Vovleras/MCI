@@ -2,9 +2,10 @@ from tkinter import filedialog, messagebox
 from tkinter.ttk import Combobox
 import tkinter as tk
 from Clases import *
-from algoritmoVoraz import salida
+from voraz import salidaVoraz
 import os
 import traceback
+from fuerzaBruta import salidaFB
 
 archivo_generado= None
 
@@ -64,15 +65,9 @@ def escribir_archivo(ruta_archivo, contenido):
         with open(ruta_archivo, 'w') as file:
             file.write(f"{contenido.ci}\n")
             file.write(f"{contenido.esfuerzo}\n")
-            for tupla in contenido.nuevaRed.sag:
-                print("esto es un tupla")
-                print(tupla)
-                
-                info = [tupla.n, tupla.o1, tupla.o2, tupla.r]  
-                valores = [str(valor) for valor in info]   
-                linea = ", ".join(valores)                  
-                file.write(f"{linea}\n")  
-            print("salio del for de tupla")
+            for e in contenido.e:
+                file.write(f"{e}\n")  
+            print("salio del for de e")
         
         print(f"Archivo generado en: {os.path.abspath(ruta_archivo)}")  
         return os.path.abspath(ruta_archivo)
@@ -95,12 +90,13 @@ def enviar_info():
         
         alg = opcion_alg.get()
         if alg == "Voraz":
-            sol = salida(res)
+            sol = salidaVoraz(res)
             print("hallo la sol")
             archivo_generado = escribir_archivo("resultados.txt", sol)
         elif alg == "Fuerza Bruta":
-            print("f")
-            archivo_generado = escribir_archivo("resultados.txt", res)
+            sol = salidaFB(res)
+            print("hallo la sol")
+            archivo_generado = escribir_archivo("resultados.txt", sol)
         elif alg == "Dinámica":
             print("d")
             archivo_generado = escribir_archivo("resultados.txt", res)

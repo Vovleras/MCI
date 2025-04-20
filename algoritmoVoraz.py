@@ -1,27 +1,11 @@
 import math
 from Clases import *
 import copy
-
-
-def calcularCI(red):
-    totalAgentes = len(red.sag)
-    num = 0
-    for ag in red.sag:
-        num += ag.n * math.pow((ag.o1 - ag.o2), 2) 
-    
-    return num / totalAgentes
+from generales import *
 
 def calcularEsfuerzo(agente, e):
-        return math.ceil(math.fabs(agente.o1 - agente.o2) * agente.r * e)
+    return math.ceil(math.fabs(agente.o1 - agente.o2) * agente.r * e)
     
-def calcularEsfuerzoRed(red, e):
-    esfuerzo = 0
-    for i in range (len(red.sag)):
-        agente = red.sag[i]
-        esfuerzo += math.ceil(math.fabs(agente.o1 - agente.o2) * agente.r * e[i])
-        
-    return esfuerzo
-
 def beneficio(agente):
     return math.fabs(agente.o1 - agente.o2) /agente.r
 
@@ -53,20 +37,11 @@ def modciV(rs):
                     voraz(dic,list(dic.items())[0][0].n, long-1, mx-esfuerzo   )
             else:
                 voraz(dic, res-1, long, mx)
-    
            
     voraz(dic,list(dic.items())[0][0].n, len(dic), mx)
-    return e
-
-def obtenerNuevaRed(redSocial, e):
-    solucion = copy.deepcopy(redSocial)
-    for i in range (len(solucion.sag)):
-        solucion.sag[i].n -= e[i]
-    return solucion
-
-def printRed(red):
-    for ag in red.sag:
-        print(ag)
+    newRed = obtenerNuevaRed(rs, e)
+    res = Salida(e, calcularCI(newRed), calcularEsfuerzoRed(newRed, e), newRed)
+    return res
         
 def salida(redSocial):
     print("Entro a sALIDA")
@@ -76,7 +51,7 @@ def salida(redSocial):
     ci = calcularCI(nuevaRed)
     esfuerzo = calcularEsfuerzoRed(redSocial, e)
     print("Salida bien")
-    return Salida(e, ci, esfuerzo, nuevaRed)
+    return Salida(e, esfuerzo, ci)
     
         
                 
