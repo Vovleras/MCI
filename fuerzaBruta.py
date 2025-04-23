@@ -1,6 +1,7 @@
 from Clases import *
 import copy
 from generales import *
+import time
 
 """def printRed(red):
     for ag in red.sag:
@@ -15,6 +16,7 @@ def maximoAgentes(redSocial):
     
 
 def modciFB(rs):
+    ti = time.time()
     maximos = maximoAgentes(rs)
     combinacion = [0] * len(maximos)
     e = [0] * len(maximos)
@@ -36,6 +38,11 @@ def modciFB(rs):
 
     esfuerzo = calcularEsfuerzoRed(solucion, e)
     ci = calcularCI(solucion)
+    tf = time.time()
+    tiempo = str(round(tf-ti,4)).replace('.', ',')
+    print("Tiempo de ejecución: ", tiempo)
+    print("CI: ", str(ci).replace('.', ','))
+    print("Solución: ", e)
     return e, esfuerzo, ci
 
 def salidaFB(rs):
