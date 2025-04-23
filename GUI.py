@@ -1,11 +1,10 @@
+import tkinter as tk
 from tkinter import filedialog, messagebox
 from tkinter.ttk import Combobox
-import tkinter as tk
 from Clases import *
-from voraz import salidaVoraz
+from Dinamica import salida
 import os
 import traceback
-from fuerzaBruta import salidaFB
 
 archivo_generado= None
 
@@ -65,9 +64,15 @@ def escribir_archivo(ruta_archivo, contenido):
         with open(ruta_archivo, 'w') as file:
             file.write(f"{contenido.ci}\n")
             file.write(f"{contenido.esfuerzo}\n")
-            for e in contenido.e:
-                file.write(f"{e}\n")  
-            print("salio del for de e")
+            for tupla in contenido.nuevaRed.sag:
+                #print("esto es un tupla")
+                #print(tupla)
+                
+                info = [tupla.n, tupla.o1, tupla.o2, tupla.r]  
+                valores = [str(valor) for valor in info]   
+                linea = ", ".join(valores)                  
+                file.write(f"{linea}\n")  
+            #print("salio del for de tupla")
         
         print(f"Archivo generado en: {os.path.abspath(ruta_archivo)}")  
         return os.path.abspath(ruta_archivo)
@@ -90,16 +95,16 @@ def enviar_info():
         
         alg = opcion_alg.get()
         if alg == "Voraz":
-            sol = salidaVoraz(res)
+            #sol = salida(res)
             print("hallo la sol")
-            archivo_generado = escribir_archivo("resultados.txt", sol)
+            #archivo_generado = escribir_archivo("resultados.txt", sol)
         elif alg == "Fuerza Bruta":
-            sol = salidaFB(res)
-            print("hallo la sol")
-            archivo_generado = escribir_archivo("resultados.txt", sol)
+            print("f")
+            archivo_generado = escribir_archivo("resultados.txt", res)
         elif alg == "Dinámica":
             print("d")
-            archivo_generado = escribir_archivo("resultados.txt", res)
+            sol = salida(res)
+            archivo_generado = escribir_archivo("resultados.txt", sol)
         else:
             messagebox.showerror("Error", "Algoritmo no válido.")
             return
@@ -157,6 +162,7 @@ subtexto_inicial.pack()
 frame_archivo = tk.Frame(ventana, pady=10)
 frame_archivo.pack(fill="x", padx=20)
 texto_archivo = tk.Label(frame_archivo, text="Seleccione un archivo:", anchor="w")
+texto_archivo.pack(fill="x")
 archivo_seleccionado = tk.StringVar()
 campo_archivo = tk.Entry(frame_archivo, textvariable=archivo_seleccionado, width=40, state="readonly")
 campo_archivo.pack(side="left", pady=5, padx=5)

@@ -1,6 +1,7 @@
 import Clases
 from funcionesAuxiliares import *
 import heapq
+import time
   
 def solucionDinamica(redSocial):
   #Inicializar variables y matrices
@@ -13,6 +14,7 @@ def solucionDinamica(redSocial):
   matrizSolucion = [[[0] * n for _ in range(n)] for _ in range(esfuerzoMax + 1)]  #Contiene las soluciones parciales
   
   for i in range(0,n):
+    ti = time.time()
     #Inicializar variables
     cantCambiar = 0 #Cantidad de agentes que cambio actualmente
     agenteSiguiente = 1 #Cantidad de agentes que se busca cambiar
@@ -54,26 +56,28 @@ def solucionDinamica(redSocial):
 
             redModificada = obtenerNuevaRed(redSocial, solParcial)
             valorComparar = calcularCI(redModificada.sag)
-            heapq.heappush(arregloValores,[valorComparar, solParcial])
+            arregloValores.append([valorComparar, solParcial])
           
-          ciMinimo = heapq.heappop(arregloValores)
+          ciMinimo = min(arregloValores, key=lambda x: x[0])
           matrizCI[j][i] = ciMinimo[0]
           matrizSolucion[j][i] = ciMinimo[1]
-  
+          
+  tf = time.time()
+  tiempo = round(tf-ti,4)
   sol = matrizSolucion[esfuerzoMax][i]
-  redFinal = obtenerNuevaRed(redSocial,sol)
-  print("Esta es la solución final: ", sol)
-  print("Esta es el nuevo CI: ",calcularCI(redFinal.sag))
-  print("Esta es la última celda: ",matrizCI[esfuerzoMax][i])
+  #redFinal = obtenerNuevaRed(redSocial,sol)
+  print("Tiempo de ejecución: ", tiempo)
+  print("CI: ",matrizCI[esfuerzoMax][i])
+  print("Solución: ",sol)
 
   return sol, matrizCI[esfuerzoMax][i]
 
 def salida(redSocial):
-  print("Entro a salida de Dinamica.py")
+  #print("Entro a salida de Dinamica.py")
   e, ci = solucionDinamica(redSocial)
   nuevaRed= obtenerNuevaRed(redSocial, e)
   esfuerzo = 0
-  print("Salida bien")
+  #print("Salida bien")
   return Clases.Salida(e, ci, esfuerzo, nuevaRed)
 
 #--PRUEBA 12--

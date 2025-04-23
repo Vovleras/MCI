@@ -65,14 +65,14 @@ def escribir_archivo(ruta_archivo, contenido):
             file.write(f"{contenido.ci}\n")
             file.write(f"{contenido.esfuerzo}\n")
             for tupla in contenido.nuevaRed.sag:
-                print("esto es un tupla")
-                print(tupla)
+                #print("esto es un tupla")
+                #print(tupla)
                 
                 info = [tupla.n, tupla.o1, tupla.o2, tupla.r]  
                 valores = [str(valor) for valor in info]   
                 linea = ", ".join(valores)                  
                 file.write(f"{linea}\n")  
-            print("salio del for de tupla")
+            #print("salio del for de tupla")
         
         print(f"Archivo generado en: {os.path.abspath(ruta_archivo)}")  
         return os.path.abspath(ruta_archivo)

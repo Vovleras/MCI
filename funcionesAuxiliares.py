@@ -29,5 +29,5 @@ def matrizEsfuerzo(redSocial):
     matrizInterna.insert(0, 0)
     matriz.append(matrizInterna)
     matrizInterna = []
-  print(f"Matriz de esfuerzos: {matriz}")
+  #print(f"Matriz de esfuerzos: {matriz}")
   return(matriz)
