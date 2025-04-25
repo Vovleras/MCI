@@ -1,10 +1,5 @@
-from Clases import *
 import copy
-from generales import *
-
-"""def printRed(red):
-    for ag in red.sag:
-        print(ag)"""
+import funcionesAuxiliares
 
 def maximoAgentes(redSocial):
     n = len(redSocial.sag)
@@ -22,9 +17,9 @@ def modciFB(rs):
 
     def generarCombinacion(combinacion, index, red, solucion, e):
         if index == len(maximos):
-            if (calcularEsfuerzoRed(rs, combinacion) <= rs.r_max):
-                nuevaRed = obtenerNuevaRed(red, combinacion)
-                if (calcularCI(nuevaRed) < calcularCI(solucion)):
+            if (funcionesAuxiliares.calcularEsfuerzoRed(rs, combinacion) <= rs.r_max):
+                nuevaRed = funcionesAuxiliares.obtenerNuevaRed(red, combinacion)
+                if (funcionesAuxiliares.calcularCI(nuevaRed.sag) < funcionesAuxiliares.calcularCI(solucion.sag)):
                     solucion.sag = nuevaRed.sag
                     e[:] = combinacion[:]
             return
@@ -34,10 +29,6 @@ def modciFB(rs):
 
     generarCombinacion(combinacion, 0, rs, solucion, e)
 
-    esfuerzo = calcularEsfuerzoRed(solucion, e)
-    ci = calcularCI(solucion)
-    return e, esfuerzo, ci
-
-def salidaFB(rs):
-    e,esfuerzo,ci =  modciFB(rs)
-    return Salida(e, esfuerzo,ci)
+    esfuerzo = funcionesAuxiliares.calcularEsfuerzoRed(solucion, e)
+    ci = funcionesAuxiliares.calcularCI(solucion.sag)
+    return e, ci, esfuerzo

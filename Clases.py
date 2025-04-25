@@ -1,5 +1,3 @@
-
-
 class RedSocial:
     def __init__(self, sag, r_max):
         self.sag = sag

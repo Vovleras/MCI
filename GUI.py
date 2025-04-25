@@ -1,23 +1,28 @@
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, scrolledtext 
 from tkinter.ttk import Combobox
 import tkinter as tk
 from Clases import *
-from voraz import salidaVoraz
+import funcionesAuxiliares
 import os
 import traceback
-from fuerzaBruta import salidaFB
 
 archivo_generado= None
 
 def cargar_archivo():
-    
+    global datos
     archivo = filedialog.askopenfilename(
         title="Seleccionar archivo",
-        filetypes=(("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*"))
+        filetypes=[("Archivos de texto", "*.txt")]
     )
     if archivo:
         archivo_seleccionado.set(archivo)  
+        try:
+            datos = leer_archivo(archivo_seleccionado.get())
+        except Exception as e:
+            print(f"Error al leer el archivo: {e}")  
+            raise 
         return archivo  
+        
     return None
 
 def leer_archivo(ruta_archivo):
@@ -38,6 +43,12 @@ def leer_archivo(ruta_archivo):
             fila = [int(n) if i < 3 else float(n) for i, n in enumerate(numeros)]
             datos_intermedios.append(fila)
 
+        ventana_entrada.configure(state="normal")
+        ventana_entrada.delete('1.0', tk.END)
+        grupos = '\n'.join(str(sublista) for sublista in datos_intermedios)
+        ventana_entrada.insert(tk.INSERT,"DATOS DE ENTRADA\n\nCantidad de grupos: " +str(primera_linea)+"\n\nEsfuerzo máximo: "+str(ultima_linea)+"\n\nGrupos de agentes:\n"+grupos)
+        ventana_entrada.configure(state="disabled")
+        
         return [primera_linea, datos_intermedios, ultima_linea]
 
     except Exception as e:
@@ -56,11 +67,17 @@ def crear_RedSocial(datos):
     return RedSocial(sag, datos[2])
            
 
-def escribir_archivo(ruta_archivo, contenido):
+def escribir_archivo(contenido):
     try:
-        
-        if not ruta_archivo.lower().endswith('.txt'):
-            ruta_archivo += '.txt'
+        ruta_archivo = filedialog.asksaveasfilename(
+            defaultextension=".txt",
+            filetypes=[("Archivos de texto", "*.txt")],
+            title="Guardar archivo como"
+        )
+                
+        if not ruta_archivo:
+            print("Guardado cancelado por el usuario.")
+            return None
             
         with open(ruta_archivo, 'w') as file:
             file.write(f"{contenido.ci}\n")
@@ -76,35 +93,18 @@ def escribir_archivo(ruta_archivo, contenido):
         raise  
 
 def enviar_info():
-    global archivo_generado
-    
-    nombre_archivo = archivo_seleccionado.get()
-
-    
-    
+    global archivo_generado, datos  
     try:
-       
-        datos = leer_archivo(nombre_archivo)
         res = crear_RedSocial(datos)
-        
-        
         alg = opcion_alg.get()
-        if alg == "Voraz":
-            sol = salidaVoraz(res)
-            print("hallo la sol")
-            archivo_generado = escribir_archivo("resultados.txt", sol)
-        elif alg == "Fuerza Bruta":
-            sol = salidaFB(res)
-            print("hallo la sol")
-            archivo_generado = escribir_archivo("resultados.txt", sol)
-        elif alg == "Dinámica":
-            print("d")
-            archivo_generado = escribir_archivo("resultados.txt", res)
-        else:
-            messagebox.showerror("Error", "Algoritmo no válido.")
-            return
+        sol = funcionesAuxiliares.salida(res,alg)
+        archivo_generado = escribir_archivo(sol) 
             
         if archivo_generado:
+            ventana_resultado.configure(state="normal")
+            ventana_resultado.delete('1.0', tk.END)
+            ventana_resultado.insert(tk.INSERT,"RESULTADO\n\nConflicto Interno: " +str(sol.ci)+"\n\nEsfuerzo: " +str(sol.esfuerzo)+"\n\nSolución: " +str(sol.e))
+            ventana_resultado.configure(state="disabled")
             messagebox.showinfo("Éxito", f"Archivo generado en:\n{archivo_generado}")
         else:
             messagebox.showerror("Error", "No se generó ningún archivo.")
@@ -112,37 +112,9 @@ def enviar_info():
         messagebox.showerror("Error", f"Error al procesar: {str(e)}")
         print(f"Error detallado: {traceback.format_exc()}")  # Para depuración
     
-def descargar_resultados():
-    global archivo_generado
-
-    if not archivo_generado:
-        messagebox.showerror("Error", "No hay resultados para descargar. Procesa un archivo primero.")
-        return
-
-    try:
-        
-        with open(archivo_generado, "r", encoding="utf-8") as archivo:
-            contenido = archivo.read()
-
-       
-        archivo_guardar = filedialog.asksaveasfile(
-            mode="w",
-            defaultextension=".txt",
-            filetypes=[("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*")]
-        )
-        
-        if archivo_guardar:
-            archivo_guardar.write(contenido)  # Escribir el contenido en la nueva ubicación
-            archivo_guardar.close()
-            messagebox.showinfo("Éxito", "Archivo descargado exitosamente.")
-    except FileNotFoundError:
-        messagebox.showerror("Error", "No se encontró el archivo generado.")
-    except Exception as e:
-        messagebox.showerror("Error", f"Ocurrió un error al descargar el archivo: {str(e)}")
-
 ventana = tk.Tk()
 ventana.title("Moderador del conflicto interno")
-ventana.geometry("600x400")
+ventana.geometry("600x625")
 ventana.resizable(False, False)
 
 # Encabezado
@@ -158,10 +130,15 @@ frame_archivo = tk.Frame(ventana, pady=10)
 frame_archivo.pack(fill="x", padx=20)
 texto_archivo = tk.Label(frame_archivo, text="Seleccione un archivo:", anchor="w")
 archivo_seleccionado = tk.StringVar()
-campo_archivo = tk.Entry(frame_archivo, textvariable=archivo_seleccionado, width=40, state="readonly")
+campo_archivo = tk.Entry(frame_archivo, textvariable=archivo_seleccionado, width=72, state="readonly")
 campo_archivo.pack(side="left", pady=5, padx=5)
 boton_cargar = tk.Button(frame_archivo, text="Cargar Archivo", command=cargar_archivo,bg="#D1C4E9", fg="black")
 boton_cargar.pack(side="left", pady=5, padx=5)
+
+#Ventana para mostrar entrada:
+ventana_entrada = scrolledtext.ScrolledText(wrap = tk.WORD,  width = 40,  height = 10, font =("Arial", 12)) 
+ventana_entrada.config(state=tk.DISABLED)
+ventana_entrada.pack()
 
 # Selección de algoritmo
 frame_algoritmo = tk.Frame(ventana, pady=10)
@@ -179,9 +156,10 @@ frame_boton.pack()
 boton = tk.Button(frame_boton, text="Obtener Resultados", command=enviar_info, width=20, bg="#F8BBD0", fg="black")
 boton.pack()
 
-# Botón de descargar resultados
-boton_descargar = tk.Button(frame_boton, text="Descargar Resultados", command=descargar_resultados, width=20,  bg="#D1C4E9", fg="black")
-boton_descargar.pack(pady=10)
+#Ventana para mostrar resultados:
+ventana_resultado = scrolledtext.ScrolledText(wrap = tk.WORD,  width = 40,  height = 10, font =("Arial", 12)) 
+ventana_resultado.config(state=tk.DISABLED)
+ventana_resultado.pack()
 
 # Iniciar la interfaz
 ventana.mainloop()

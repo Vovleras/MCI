@@ -1,6 +1,5 @@
 import math
-from Clases import *
-from generales import *
+import funcionesAuxiliares
 import heapq
 
 def calcularEsfuerzo(agente, e):
@@ -34,10 +33,6 @@ def modciV(rs):
         e[index] = mod
         mx -= esfuerzo
 
-    ci = calcularCI(obtenerNuevaRed(rs, e))
-    esfuerzoTotal = calcularEsfuerzoRed(rs, e)
-    return e, esfuerzoTotal, ci
-
-def salidaVoraz(rs):
-    e,esfuerzo,ci =  modciV(rs)
-    return Salida(e, esfuerzo,ci)
+    ci = funcionesAuxiliares.calcularCI(funcionesAuxiliares.obtenerNuevaRed(rs, e).sag)
+    esfuerzoTotal = funcionesAuxiliares.calcularEsfuerzoRed(rs, e)
+    return e, ci, esfuerzoTotal
