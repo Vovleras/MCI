@@ -1,6 +1,8 @@
 import math
 import copy
 
+matrizEsfuerzo = []
+
 #Calcula el conflicto interno de una red social que recibe como parámetro
 def calcularCI(red):
   totalAgentes = len(red)
@@ -30,4 +32,13 @@ def matrizEsfuerzo(redSocial):
     matriz.append(matrizInterna)
     matrizInterna = []
   #print(f"Matriz de esfuerzos: {matriz}")
+  global matrizEsfuerzo
+  matrizEsfuerzo = matriz
   return(matriz)
+
+def calcularEsfuerzo(solucion):
+  esfuerzoFinal = 0
+  for i in range (0, len(matrizEsfuerzo)):
+    esfuerzoFinal += matrizEsfuerzo[i][solucion[i]]
+  
+  return esfuerzoFinal

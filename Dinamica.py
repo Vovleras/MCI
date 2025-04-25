@@ -76,7 +76,7 @@ def salida(redSocial):
   #print("Entro a salida de Dinamica.py")
   e, ci = solucionDinamica(redSocial)
   nuevaRed= obtenerNuevaRed(redSocial, e)
-  esfuerzo = 0
+  esfuerzo = calcularEsfuerzo(e)
   #print("Salida bien")
   return Clases.Salida(e, ci, esfuerzo, nuevaRed)
 
