@@ -2,8 +2,8 @@ import math
 import copy
 import Clases
 import Dinamica
-import FuerzaBruta
-import Voraz
+import fuerzaBruta
+import voraz
 from tkinter import messagebox
 
 #Calcula el conflicto interno de una red social que recibe como parámetro
@@ -53,11 +53,11 @@ def calcularEsfuerzoRed(rs, e):
 def salida(redSocial,algoritmo):
   match algoritmo:
     case "Fuerza Bruta":
-      e, ci, esfuerzo = FuerzaBruta.modciFB(redSocial)
+      e, ci, esfuerzo = fuerzaBruta.modciFB(redSocial)
     case "Dinámica":
       e, ci, esfuerzo = Dinamica.solucionDinamica(redSocial)
     case "Voraz":
-      e, ci, esfuerzo = Voraz.modciV(redSocial)
+      e, ci, esfuerzo = voraz.modciV(redSocial)
     case _:
       messagebox.showerror("Error", "Algoritmo no válido.")
       exit()
